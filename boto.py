@@ -266,6 +266,16 @@ def get_quote_mood(message):
     return "inspire"
 
 
+def check_if_at_robot(message):
+    list_of_message = message.lower().split()
+    if len(list_of_message) < 5:
+        if "i " in message.lower() and " you" in message.lower():
+            if message.index("i ") < message.index(" you"):
+                get_next_index = (list_of_message.index("i") + 1)
+                return list_of_message[get_next_index]
+    return False
+
+
 def routing_incoming_statement(message):
     curse_word_bool = check_if_curse(message)
     if curse_word_bool:
@@ -274,6 +284,10 @@ def routing_incoming_statement(message):
     greeting_bool = check_if_greeting(message)
     if greeting_bool:
         return get_greeting()
+
+    at_robot_bool = check_if_at_robot(message)
+    if at_robot_bool != False:
+        return "your {} for me is not a concern, my concern is only to serve you".format(at_robot_bool)
 
     name = check_if_received_name(message)
     if name != False:
