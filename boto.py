@@ -5,6 +5,7 @@ from bottle import route, run, template, static_file, request
 import json
 import requests
 from random import randint
+import operator
 
 
 def get_weather(city_name):
@@ -308,7 +309,73 @@ def routing_incoming_statement(message):
 
 
 def selecting_animation(message):
-    return "inlove"
+    animation_dict = {
+        "afraid": ["fear", "scare", "boo ", "!!!"],
+        "bored": ["code", "python", "debug", "boring", "I'm ", "I am ", "baseball"],
+        "confused": [" math ", "algorithm", " not human", "not a human", " not real", "confused", "confusion"],
+        "crying": [" died", " is sick", " is in jail", " got sick", " ill "],
+        "dancing": ["music", " dance", "dance ", "start dancing", " dancing ", "rythem", "shake it", "move it"],
+        "dog": ["best friend", " a pet", "pet ", " dog ", " puppy "],
+        "excited": ["thrill", "let's play", "ice cream", "ice-cream", "snow fight"],
+        "giggling": ["joke", "kidding", "joshing", "giggl"],
+        "heartbroke": [" hate you", " dislike you", " don't like you", " do not like you"],
+        "inlove": ["love ", " love", " like ", " infatuated"],
+        "laughing": ["i am funny", "hysterical", "comic", "comedian", "laughter", "laugh"],
+        "money": ["bling", "money", "get that paper", "coins", "stocks", "investment", "financ", "economic", "expensive", "rich", "wealth"],
+        "no": ["anal", "anus", "ballsack", "blowjob", "blow job", "boner", "clitoris","cock","cunt","dick",
+               "dildo", "dyke", "fag", "fuck", "jizz", "labia", "muff", "nigger", "nigga", "penis", "piss",
+               "pussy", "scrotum", "sex", "shit", "slut", "smegma", "spunk", "twat", "vagina", "wank", "whore"],
+        "ok": [" me?", "sorry", "sry", "apologize to you"],
+        "takeoff": [" fly", "rocket", "get away", "be gone"],
+        "waiting": ["wait ", " wait?", "hold up", "one sec"],
+    }
+
+    afraid_count = get_count_of_animation(animation_dict["afraid"], message)
+    bored_count = get_count_of_animation(animation_dict["bored"], message)
+    confused_count = get_count_of_animation(animation_dict["confused"], message)
+    crying_count = get_count_of_animation(animation_dict["crying"], message)
+    dancing_count = get_count_of_animation(animation_dict["dancing"], message)
+    dog_count = get_count_of_animation(animation_dict["dog"], message)
+    excited_count = get_count_of_animation(animation_dict["excited"], message)
+    giggling_count = get_count_of_animation(animation_dict["giggling"], message)
+    heartbroke_count = get_count_of_animation(animation_dict["heartbroke"], message)
+    inlove_count = get_count_of_animation(animation_dict["inlove"], message)
+    laughing_count = get_count_of_animation(animation_dict["laughing"], message)
+    money_count = get_count_of_animation(animation_dict["money"], message)
+    no_count = get_count_of_animation(animation_dict["no"], message)
+    ok_count = get_count_of_animation(animation_dict["ok"], message)
+    takeoff_count = get_count_of_animation(animation_dict["takeoff"], message)
+    waiting_count = get_count_of_animation(animation_dict["waiting"], message)
+
+    animation_count_dict = {
+        "afraid": afraid_count,
+        "bored": bored_count,
+        "confused": confused_count,
+        "crying": crying_count,
+        "dancing": dancing_count,
+        "dog": dog_count,
+        "excited": excited_count,
+        "giggling": giggling_count,
+        "heartbroke": heartbroke_count,
+        "inlove": inlove_count,
+        "laughing": laughing_count,
+        "money": money_count,
+        "no": no_count,
+        "ok": ok_count,
+        "takeoff": takeoff_count,
+        "waiting": waiting_count,
+    }
+
+    animation_returned = max(animation_count_dict.items(), key=operator.itemgetter(1))[0]
+    return animation_returned
+
+
+def get_count_of_animation(values_list, message):
+    counter = 0
+    for value in values_list:
+        if value in message:
+            counter = message.count(value) + counter
+    return counter
 
 
 @route('/', method='GET')
