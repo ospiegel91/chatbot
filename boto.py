@@ -106,7 +106,7 @@ def get_capabilities():
 
 
 def check_if_capabilities_request(message):
-    possible_inquiries = ["what can you do", "what are your capabilities", "what do you know about", "what is your scope of abilities", "what are you able to do", "what do you do", "can you do ",
+    possible_inquiries = ["what can you do", "what are your capabilities", "what are your abilities", "what do you know about", "what is your scope of abilities", "what are you able to do", "what do you do", "can you do ",
                           "what can you help me with", "what is knowledge", "can you get the"]
     if any(inquiry in message.lower() for inquiry in possible_inquiries):
         return True
@@ -114,7 +114,7 @@ def check_if_capabilities_request(message):
         return False
 
 
-def get_curse_reponse():
+def get_curse_response():
     curse_responses = ["Words can cut like a knife through the soul", "I'm sensitive to this kind of language",
                        "We're on live Television sir!!!", "Quit the cursing!"]
     i = randint(0, 3)
@@ -270,7 +270,7 @@ def check_if_at_robot(message):
     list_of_message = message.lower().split()
     if len(list_of_message) < 5:
         if "i " in message.lower() and " you" in message.lower():
-            if message.index("i ") < message.index(" you"):
+            if message.lower().index("i ") < message.lower().index(" you"):
                 get_next_index = (list_of_message.index("i") + 1)
                 return list_of_message[get_next_index]
     return False
@@ -279,7 +279,7 @@ def check_if_at_robot(message):
 def routing_incoming_statement(message):
     curse_word_bool = check_if_curse(message)
     if curse_word_bool:
-        return get_curse_reponse()
+        return get_curse_response()
 
     greeting_bool = check_if_greeting(message)
     if greeting_bool:
@@ -320,6 +320,7 @@ def routing_incoming_statement(message):
     if quote_bool:
         quote_mood = get_quote_mood(message)
         return get_quote(quote_mood)
+    return "I have nothing to say on this matter, try something else"
 
 
 def selecting_animation(message):
